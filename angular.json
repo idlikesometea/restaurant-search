@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "restaurant-search"
+    }
+  },
+  "defaultProject": "restaurant-search",
+  "cli": {
+    "analytics": false
+  }
 }
