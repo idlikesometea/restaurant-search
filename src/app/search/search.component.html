@@ -15,7 +15,7 @@
       </div>
 
       <div class="col-md-3">
-        <select name="radius" class="form-control" id="searchradius" aria-describedby="radiusHelp"[(ngModel)]="searchRadius">
+        <select name="radius" (change)="search(query.trim())" class="form-control" id="searchradius" aria-describedby="radiusHelp"[(ngModel)]="searchRadius">
           <option *ngFor="let option of radiusOptions" [value]="option">{{option}} mi.</option>
         </select>
         <small id="radiusHelp" class="form-text text-muted">Search radius</small>

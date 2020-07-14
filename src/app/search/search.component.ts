@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+
+import { SearchService } from './search.service';
+
 
 @Component({
   selector: 'app-search',
@@ -14,13 +17,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   keyeventSub: Subscription;
   @ViewChild('searchbar', { static: true }) input: ElementRef;
 
-
-  constructor() { }
+  constructor(
+    private searchService: SearchService
+  ) { }
 
   ngOnInit(): void {
     this.keyeventSub = fromEvent<any>(this.input.nativeElement, 'keyup')
       .pipe(
-        map((input: any) => input.currentTarget.value),
+        map((input: any) => input.currentTarget.value.trim()),
+        filter(value => value),
         debounceTime(350),
         distinctUntilChanged()
       )
@@ -29,8 +34,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       })
   }
 
-  search(query: string,) {
-    console.log(query, this.searchRadius, 'doSearch');
+  search(query: string) {
+    if (!query) return;
+    this.searchService.search(query, this.searchRadius);
   }
 
   ngOnDestroy() {
