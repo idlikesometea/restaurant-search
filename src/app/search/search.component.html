@@ -1,5 +1,25 @@
 <div class="container">
+  <form>
+    <div class="row">
+      <div class="col-md-9">
+        <input
+          type="text"
+          class="form-control"
+          id="searchbar"
+          name="query"
+          #searchbar
+          [(ngModel)]="query"
+          aria-describedby="searchHelp"
+          placeholder="Enter location">
+        <small id="searchHelp" class="form-text text-muted">Enter a Address/City/State or Zipcode within the US</small>
+      </div>
 
-
-
+      <div class="col-md-3">
+        <select name="radius" class="form-control" id="searchradius" aria-describedby="radiusHelp"[(ngModel)]="searchRadius">
+          <option *ngFor="let option of radiusOptions" [value]="option">{{option}} mi.</option>
+        </select>
+        <small id="radiusHelp" class="form-text text-muted">Search radius</small>
+      </div>
+    </div>
+  </form>
 </div>
