@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
-
-import { SearchService } from './search.service';
+import { SearchStore } from 'src/store/state/search.state';
 
 
 @Component({
@@ -11,14 +10,16 @@ import { SearchService } from './search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  searchRadius: number = 0;
-  radiusOptions = [0, 10, 50, 100];
+  searchRadius: number = 5;
+  radiusOptions = [5, 10, 25, 50];
   query: string = '';
   keyeventSub: Subscription;
   @ViewChild('searchbar', { static: true }) input: ElementRef;
+  searchResults$: any;
+  isLoading$: any;
 
   constructor(
-    private searchService: SearchService
+    private store: SearchStore
   ) { }
 
   ngOnInit(): void {
@@ -32,11 +33,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       .subscribe(query => {
         this.search(query);
       })
+
+    this.searchResults$ = this.store.getSearchResults();
+    this.isLoading$ = this.store.isLoading();
+    console.log(this.searchResults$, 'aber', this.isLoading$);
   }
 
   search(query: string) {
     if (!query) return;
-    this.searchService.search(query, this.searchRadius);
+    this.store.search(query, this.searchRadius);
   }
 
   ngOnDestroy() {

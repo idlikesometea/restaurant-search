@@ -1,0 +1,28 @@
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { SearchService } from 'src/app/search/search.service';
+import { mergeMap, catchError, map } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+
+@Injectable()
+export class SearchEffects{
+
+  searchRestaurants$ = createEffect(() => this.actions$.pipe(
+    ofType('[Search Page] Search'),
+    mergeMap(query =>
+      this.searchService.search(query)
+        .pipe(
+          map(restaurants => {
+            console.log(restaurants, 'effects');
+            return {type: '[Search API] Search Success', response: restaurants};
+          }),
+          catchError(error => of({type:'[Search API] Search Error', error: error}))
+        )
+      )
+  ));
+
+  constructor(
+    private actions$: Actions,
+    private searchService: SearchService
+  ) {}
+};
