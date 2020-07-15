@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from '../reducers';
 
 
 
@@ -11,10 +9,7 @@ import { reducers, metaReducers } from '../reducers';
   declarations: [SearchComponent],
   imports: [
     CommonModule,
-    FormsModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    })
+    FormsModule
   ]
 })
 export class SearchModule { }
