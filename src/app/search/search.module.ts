@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from './search.component';
 import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
 
 
 
@@ -9,7 +10,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [SearchComponent],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forRoot({}, {})
   ]
 })
 export class SearchModule { }
