@@ -37,18 +37,30 @@
       </button>
     </div>
 
-    <div class="col col-sm-12 table-container" *ngIf="resultsLength$ | async">
+    <div class="col col-sm-12 table-container" *ngIf="results.length">
+      <div class="row table-information">
+        <div class="col-sm-12">
+          Results for <i>"{{query}}"</i> within {{searchRadius}} miles
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Filter</span>
+            </div>
+            <input class="form-control" (keyup)="filter($event.target.value)" type="text" placeholder="Filter by etc">
+        </div>
+      </div>
       <table class="table">
         <thead>
           <tr>
             <td></td>
             <td>Id</td>
-            <td>name</td>
-            <td>address</td>
+            <td (click)="sort('name')">name</td>
+            <td (click)="sort('address')">address</td>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of filtered" (click)="onItemClicked(item)" [class.active]="item.checked">
+          <tr *ngFor="let item of results" (click)="onItemClicked(item)" [class.active]="item.checked">
             <td>
               <div class="checkbox">
                 <div class="checkbox-fill"></div>
@@ -60,6 +72,8 @@
           </tr>
         </tbody>
       </table>
+
+      <button class="btn btn-primary">Save your itinerary</button>
     </div>
   </div>
 </div>

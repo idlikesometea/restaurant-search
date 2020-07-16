@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { fromEvent, Subscription, Observable } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
 import { SearchStore } from 'src/store/state/search.state';
 import { ISearchResponse } from 'src/models/search.model';
-
+import { SearchService } from './search.service';
 
 @Component({
   selector: 'app-search',
@@ -14,52 +13,41 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchRadius: number = 5;
   radiusOptions = [5, 10, 25, 50];
   query: string = '';
-  keyeventSub: Subscription;
-  @ViewChild('searchbar', { static: true }) input: ElementRef;
+  searchEvent$: Subscription;
+  @ViewChild('searchbar', { static: true }) searchbar: ElementRef;
   searchResults$: Observable<ISearchResponse[]>;
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
-  resultsLength$: Observable<number>;
   showAlert: boolean = false;
-  filtered = [];
+  results;
 
   constructor(
-    private store: SearchStore
-  ) { }
+    private store: SearchStore,
+    private searchService: SearchService,
+  ) {
+    this.searchService.getResults$().subscribe(results => {
+      this.results = results;
+    });
+  }
 
   ngOnInit(): void {
-    this.keyeventSub = fromEvent<any>(this.input.nativeElement, 'keyup')
-      .pipe(
-        map(input => input.currentTarget.value.trim()),
-        debounceTime(350),
-        distinctUntilChanged()
-      )
+    this.searchEvent$ = this.searchService.keyupEvent(this.searchbar.nativeElement)
       .subscribe(query => {
         this.search(query);
       });
 
     this.searchResults$ = this.store.searchResults$();
-    this.searchResults$
-      .subscribe(results =>
-        this.filtered = results.map(result => ({...result, checked: false}))
-      );
-
-    this.resultsLength$ = this.store.resultsLength$();
-    this.resultsLength$.subscribe();
+    this.searchResults$.subscribe(results => this.searchService.storeResults(results));
 
     this.isLoading$ = this.store.isLoading$();
     this.isLoading$.subscribe();
 
     this.error$ = this.store.searchError$();
     this.error$.subscribe(error => {
-      if (error) {
-        this.showAlert = true;
-        setTimeout(()=> {
-          this.showAlert = false;
-        }, 4000);
-      } else {
+      this.showAlert = (error !== '') || false;
+      setTimeout(() => {
         this.showAlert = false;
-      }
+      }, 4000);
     });
   }
 
@@ -71,13 +59,21 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.store.search(query, this.searchRadius);
   }
 
+  filter(query: string) {
+    this.searchService.filter(query);
+  }
+
+  sort(key) {
+    this.searchService.sort(key);
+  }
+
   onItemClicked(restaurant) {
-    const index = this.filtered.findIndex(i => i.id === restaurant.id);
-    this.filtered[index].checked = !restaurant.checked;
+    const index = this.results.findIndex(i => i.id === restaurant.id);
+    this.results[index].checked = !restaurant.checked;
   }
 
   ngOnDestroy() {
-    this.keyeventSub.unsubscribe();
+    this.searchEvent$.unsubscribe();
   }
 
 }
