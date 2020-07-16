@@ -8,12 +8,14 @@ import * as fromSearch from '../../store/reducers/search.reducer';
 import { SearchStore } from 'src/store/state/search.state';
 import { EffectsModule } from '@ngrx/effects';
 import { SearchEffects } from 'src/store/effects/search.effects';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [SearchComponent],
   imports: [
     CommonModule,
     FormsModule,
+    NgbModule,
     StoreModule.forFeature(fromSearch.searchFeatureKey, fromSearch.reducer),
     EffectsModule.forFeature([SearchEffects])
   ],

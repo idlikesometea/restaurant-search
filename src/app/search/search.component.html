@@ -22,4 +22,44 @@
       </div>
     </div>
   </form>
+
+  <div class="row content">
+    <div class="col col-xm-12 loader" *ngIf="isLoading$ | async">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" *ngIf="showAlert" role="alert">
+      <strong>Error!</strong> {{error$ | async}}
+      <button type="button" class="close" (click)="showAlert=false;" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="col col-sm-12 table-container" *ngIf="resultsLength$ | async">
+      <table class="table">
+        <thead>
+          <tr>
+            <td></td>
+            <td>Id</td>
+            <td>name</td>
+            <td>address</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filtered" (click)="onItemClicked(item)" [class.active]="item.checked">
+            <td>
+              <div class="checkbox">
+                <div class="checkbox-fill"></div>
+              </div>
+            </td>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.address}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

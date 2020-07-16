@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { SearchService } from 'src/app/search/search.service';
 import { mergeMap, catchError, map } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class SearchEffects{
@@ -12,11 +13,8 @@ export class SearchEffects{
     mergeMap(query =>
       this.searchService.search(query)
         .pipe(
-          map(restaurants => {
-            console.log(restaurants, 'effects');
-            return {type: '[Search API] Search Success', response: restaurants};
-          }),
-          catchError(error => of({type:'[Search API] Search Error', error: error}))
+          map(restaurants => ({type: '[Search API] Search Success', response: restaurants})),
+          catchError(error => of({type:'[Search API] Search Error', error: <HttpErrorResponse>error.statusText}))
         )
       )
   ));

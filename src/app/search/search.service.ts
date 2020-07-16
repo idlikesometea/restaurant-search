@@ -14,7 +14,6 @@ export class SearchService {
   ) { }
 
   search(query): Observable<any> {
-    console.log(query, 'api search');
     return this.http.get<ISearchResponse[]>(this.API_URL + 'restaurants');
   }
 

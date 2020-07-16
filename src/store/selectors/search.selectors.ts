@@ -1,25 +1,26 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromReducer from '../reducers/search.reducer';
 
-export const reducers = fromReducer.reducer;
-
-export const getSearchState = createFeatureSelector<fromReducer.SearchState>('search');
+export const getSearchState = createFeatureSelector<fromReducer.SearchState>(fromReducer.searchFeatureKey);
 
 export const getSearchPageState = createSelector(
     getSearchState,
     state => state
 );
 
-export const _getIsLoading = (state: fromReducer.SearchState) => state.isLoading;
-export const _getSearchResults = (state: fromReducer.SearchState) => state.searchResults;
-
 export const getIsLoading = createSelector(
     getSearchPageState,
-    _getIsLoading
+    state => state.isLoading
 );
-export const getUser = createSelector(
+
+export const getSearchResults = createSelector(
     getSearchPageState,
-    _getSearchResults
+    state => state.searchResults
+);
+
+export const getResultsLenght = createSelector(
+  getSearchPageState,
+  state => state.searchResults.length
 );
 
 export const getError = createSelector(

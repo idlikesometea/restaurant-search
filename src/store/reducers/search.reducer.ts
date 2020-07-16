@@ -11,15 +11,15 @@ export interface SearchState {
 
 export const initialState: SearchState = {
   searchResults: [],
-  isLoading: true,
+  isLoading: false,
   error: ''
 };
 
 const searchReducer = createReducer(
   initialState,
-  on(SearchActions.search, state => ({ ...state, isLoading: true})),
+  on(SearchActions.search, state => ({ ...state, isLoading: true, error: ''})),
   on(SearchActions.searchSuccess, (state, action) => ({...state, searchResults:action.response, isLoading:false})),
-  on(SearchActions.searchError, (state, action) => ({...state, error:action.error, isLoading:false})),
+  on(SearchActions.searchError, (state, action) => ({...state, isLoading: false, error: action.error})),
   on(SearchActions.searchReset, state => ({ ...initialState })),
 );
 

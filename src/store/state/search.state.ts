@@ -9,12 +9,23 @@ import * as searchSelectors from '../selectors/search.selectors';
 export class SearchStore {
   constructor(private store: Store<fromSearch.SearchState>){}
 
-  getSearchResults() {
-    this.store.select(searchSelectors._getSearchResults);
+  searchResults$() {
+    return this.store.select(searchSelectors.getSearchResults);
+  }
+
+  isLoading$(){
+    return this.store.select(searchSelectors.getIsLoading);
+  }
+
+  searchError$() {
+    return this.store.select(searchSelectors.getError);
+  }
+
+  resultsLength$() {
+    return this.store.select(searchSelectors.getResultsLenght);
   }
 
   search(query, radius) {
-    console.log(query, radius, 'dispatch');
     this.store.dispatch(search({query:query, radius:radius}));
   }
 
@@ -22,8 +33,4 @@ export class SearchStore {
     this.store.dispatch(searchReset());
   }
 
-  isLoading()
-  {
-    this.store.select(searchSelectors._getIsLoading);
-  }
 }

@@ -1,7 +1,62 @@
 form {
   margin-top: 3rem;
-
   small {
     padding-left: 0.2rem;
+  }
+}
+
+div.content {
+  margin: 3em 0;
+  div.alert {
+      width: 100%;
+  }
+
+  div.loader {
+    text-align: center;
+    .spinner-grow {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+
+  .table-container {
+    table {
+      tr {
+        td {
+          div.checkbox {
+            border: 1px solid black;
+            width: 1em;
+            height: 1em;
+            div.checkbox-fill {
+              width: 100%;
+              height: 100%;
+              position: relative;
+            }
+          }
+        }
+
+        &:hover {
+          background-color: #f9f7f7;
+        }
+
+        &.active {
+          background-color: #ececec;
+          td {
+            div.checkbox {
+              border: 0;
+              div.checkbox-fill {
+                background-color: #ffffff;
+                &:before {
+                  content: '✓';
+                  position: absolute;
+                  font-size: 1.5em;
+                  top: -0.5em;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
