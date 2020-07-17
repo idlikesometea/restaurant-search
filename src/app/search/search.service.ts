@@ -42,7 +42,6 @@ export class SearchService {
 
   sort(key, order) {
     let sortedResults = [];
-    const results = [...this.results];
     if (order) {
       this.sorted.sort((a, b) => {
         if (order === 'asc') {
