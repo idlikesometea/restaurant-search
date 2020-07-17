@@ -14,6 +14,7 @@ export class SearchService {
   filtered = [];
   sorted = [];
   tour = [];
+  active = [];
 
   constructor(
     private http: HttpClient
@@ -37,6 +38,7 @@ export class SearchService {
       filteredResults = [...this.sorted];
     }
 
+    this.active = [...filteredResults];
     this.results$.next([...filteredResults]);
   }
 
@@ -55,6 +57,8 @@ export class SearchService {
       this.sorted = [...this.results];
       sortedResults = [...this.filtered];
     }
+
+    this.active = [...sortedResults];
     this.results$.next([...sortedResults]);
   }
 
@@ -65,6 +69,7 @@ export class SearchService {
     this.results = [...storedResults]
     this.filtered = [...storedResults];
     this.sorted = [...storedResults];
+    this.active = [...storedResults];
     this.results$.next([...storedResults]);
   }
 
@@ -80,14 +85,20 @@ export class SearchService {
       result.checked = this.tour.includes(result.id);
     });
 
-    this.activeResults.map(result => {
-      return {...result, checked: this.tour.includes(result.id)};
-    });
-    this.results$.next([...this.activeResults]);
+    this.active.forEach(result => {
+      result.checked = this.tour.includes(result.id);
+    })
+
+    this.results$.next([...this.active]);
   }
 
   selectAll() {
-    console.log('select all');
+    const selected = this.active.filter(result => result.checked);
+    const checked = selected.length === this.active.length ? false : true;
+    this.results.forEach(result => result.checked = checked);
+    this.active.forEach(result => result.checked = checked);
+
+    this.results$.next([...this.active]);
   }
 
   keyupEvent(element): Observable<string>{
