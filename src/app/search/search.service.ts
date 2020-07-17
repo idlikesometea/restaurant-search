@@ -10,6 +10,7 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class SearchService {
   API_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
   results$ = new Subject<any>();
+  savedTours = [];
   results = [];
   filtered = [];
   sorted = [];
@@ -26,6 +27,15 @@ export class SearchService {
 
   getResults$() {
     return this.results$.asObservable();
+  }
+
+  getSavedTours() {
+    this.savedTours = [];
+    const savedTours = localStorage.getItem('saved');
+    if (savedTours) {
+      this.savedTours.push(...JSON.parse(savedTours));
+    }
+    return this.savedTours;
   }
 
   filter(query: string) {
@@ -95,10 +105,34 @@ export class SearchService {
   selectAll() {
     const selected = this.active.filter(result => result.checked);
     const checked = selected.length === this.active.length ? false : true;
-    this.results.forEach(result => result.checked = checked);
-    this.active.forEach(result => result.checked = checked);
+
+    this.active.forEach(result => {
+
+      result.checked = checked;
+    });
 
     this.results$.next([...this.active]);
+
+    return checked;
+  }
+
+  saveTour() {
+    return new Promise((resolve, reject) => {
+      if (this.tour.length) {
+        let newTour: any = this.results.filter(result => this.tour.includes(result.id));
+        let saved = localStorage.getItem('saved');
+        let savedTours = [];
+        if (saved) {
+          savedTours = JSON.parse(saved);
+        }
+        savedTours.push({items: newTour, _id:new Date().getTime()});
+        localStorage.setItem('saved', JSON.stringify(savedTours));
+        this.savedTours.push(savedTours);
+        resolve(savedTours);
+      } else {
+        reject('No items on tour');
+      }
+    })
   }
 
   keyupEvent(element): Observable<string>{

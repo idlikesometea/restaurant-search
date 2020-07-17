@@ -11,12 +11,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule }    from '@angular/common/http';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
+    FavouritesComponent,
   ],
   imports: [
     BrowserModule,

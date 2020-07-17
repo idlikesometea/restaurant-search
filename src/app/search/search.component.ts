@@ -22,6 +22,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showAlert: boolean = false;
   results = [];
   sorting = {id:'', name: '', address: ''};
+  allChecked:boolean = false;
 
   constructor(
     private store: SearchStore,
@@ -53,6 +54,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.showAlert = false;
       }, 4000);
     });
+
   }
 
   search(query: string) {
@@ -84,7 +86,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   selectAll() {
-    this.searchService.selectAll();
+    this.allChecked = this.searchService.selectAll();
+  }
+
+  saveTour() {
+    this.searchService.saveTour()
+    .then()
+    .catch(error => {
+      alert(error);
+    });
   }
 
   ngOnDestroy() {
