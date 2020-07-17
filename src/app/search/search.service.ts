@@ -9,7 +9,9 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class SearchService {
   API_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
-  results$ = new Subject();
+  results$ = new Subject<{store:ISearchResponse[], filtered:any}>();
+  results = [];
+  tour = [];
   constructor(
     private http: HttpClient
   ) { }
@@ -31,8 +33,24 @@ export class SearchService {
   }
 
   storeResults(results) {
+    this.results = results;
     const storedResults = results.map(result => ({...result, checked: false}));
-    this.results$.next([...storedResults]);
+    this.results$.next({store:results, filtered:storedResults});
+  }
+
+  updateTour(restaurant:ISearchResponse) {
+    const restaurantIndex = this.tour.findIndex(item => item === restaurant.id);
+    if (restaurantIndex > -1) {
+      this.tour.splice(restaurantIndex, 1);
+    } else {
+      this.tour.push(restaurant.id);
+    }
+    const checkedRestaurants = this.results.map(result => {
+      const checkedRestaurant = {...result, checked: this.tour.includes(result.id)};
+      return checkedRestaurant;
+    });
+
+    this.results$.next({store:this.results, filtered: checkedRestaurants});
   }
 
   keyupEvent(element): Observable<string>{

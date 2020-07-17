@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
   showAlert: boolean = false;
-  results;
+  results: {store:ISearchResponse[], filtered:[]};
 
   constructor(
     private store: SearchStore,
@@ -68,8 +68,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   onItemClicked(restaurant) {
-    const index = this.results.findIndex(i => i.id === restaurant.id);
-    this.results[index].checked = !restaurant.checked;
+    this.searchService.updateTour(restaurant);
   }
 
   ngOnDestroy() {

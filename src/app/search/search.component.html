@@ -37,7 +37,7 @@
       </button>
     </div>
 
-    <div class="col col-sm-12 table-container" *ngIf="results.length">
+    <div class="col col-sm-12 table-container" *ngIf="results.store.length">
       <div class="row table-information">
         <div class="col-sm-12">
           Results for <i>"{{query}}"</i> within {{searchRadius}} miles
@@ -60,7 +60,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of results" (click)="onItemClicked(item)" [class.active]="item.checked">
+          <tr *ngFor="let item of results.filtered" (click)="onItemClicked(item)" [class.active]="item.checked">
             <td>
               <div class="checkbox">
                 <div class="checkbox-fill"></div>
