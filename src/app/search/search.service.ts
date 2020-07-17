@@ -9,9 +9,12 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class SearchService {
   API_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
-  results$ = new Subject<{store:ISearchResponse[], filtered:any}>();
+  results$ = new Subject<any>();
   results = [];
+  filtered = [];
+  sorted = [];
   tour = [];
+
   constructor(
     private http: HttpClient
   ) { }
@@ -20,22 +23,50 @@ export class SearchService {
     return this.http.get<ISearchResponse[]>(this.API_URL + 'restaurants');
   }
 
-  filter(query: string) {
-    console.log('filter', query);
-  }
-
-  sort(key) {
-    console.log('sort', key);
-  }
-
   getResults$() {
     return this.results$.asObservable();
   }
 
+  filter(query: string) {
+    let filteredResults = [];
+    if (query) {
+      this.filtered = this.results.filter(result => result.name.toLowerCase().includes(query.toLowerCase()));
+      filteredResults = this.sorted.filter(sorted => this.filtered.includes(sorted));
+    } else {
+      this.filtered = [...this.results];
+      filteredResults = [...this.sorted];
+    }
+
+    this.results$.next([...filteredResults]);
+  }
+
+  sort(key, order) {
+    let sortedResults = [];
+    const results = [...this.results];
+    if (order) {
+      this.sorted.sort((a, b) => {
+        if (order === 'asc') {
+          return a[key] > b[key] ? 1 : (a[key] < b[key] ? -1 : 0);
+        } else {
+          return a[key] > b[key] ? -1 : (a[key] < b[key] ? 1 : 0);
+        }
+      });
+      sortedResults = this.sorted.filter(sorted => this.filtered.includes(sorted));
+    } else {
+      this.sorted = [...this.results];
+      sortedResults = [...this.filtered];
+    }
+    this.results$.next([...sortedResults]);
+  }
+
   storeResults(results) {
-    this.results = results;
+    this.tour = [];
     const storedResults = results.map(result => ({...result, checked: false}));
-    this.results$.next({store:results, filtered:storedResults});
+
+    this.results = [...storedResults]
+    this.filtered = [...storedResults];
+    this.sorted = [...storedResults];
+    this.results$.next([...storedResults]);
   }
 
   updateTour(restaurant:ISearchResponse) {
@@ -45,12 +76,19 @@ export class SearchService {
     } else {
       this.tour.push(restaurant.id);
     }
-    const checkedRestaurants = this.results.map(result => {
-      const checkedRestaurant = {...result, checked: this.tour.includes(result.id)};
-      return checkedRestaurant;
+
+    this.results.forEach(result => {
+      result.checked = this.tour.includes(result.id);
     });
 
-    this.results$.next({store:this.results, filtered: checkedRestaurants});
+    this.activeResults.map(result => {
+      return {...result, checked: this.tour.includes(result.id)};
+    });
+    this.results$.next([...this.activeResults]);
+  }
+
+  selectAll() {
+    console.log('select all');
   }
 
   keyupEvent(element): Observable<string>{

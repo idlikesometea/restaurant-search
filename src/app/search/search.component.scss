@@ -26,7 +26,43 @@ div.content {
       }
     }
     table {
+      thead {
+        tr td {
+          font-weight: 600;
+          position: relative;
+          &.sorteable {
+            cursor: pointer;
+            &:hover {
+              background-color: #f9f7f7;
+              &:before {
+                content: '⇵';
+                color: rgba(148, 132, 132, 0.5);
+              }
+            }
+            &.asc:before {
+              content: '↑';
+              color: #000;
+            }
+            &.desc:before {
+              content: '↓';
+              color: #000;
+            }
+            &:before {
+              position: absolute;
+              right: 1em;
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          &:hover {
+            background-color: #f9f7f7;
+          }
+        }
+      }
       tr {
+        cursor: pointer;
         td {
           div.checkbox {
             border: 1px solid #c7c5c5;
@@ -41,10 +77,6 @@ div.content {
               position: relative;
             }
           }
-        }
-
-        &:hover {
-          background-color: #f9f7f7;
         }
 
         &.active {

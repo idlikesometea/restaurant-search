@@ -37,7 +37,7 @@
       </button>
     </div>
 
-    <div class="col col-sm-12 table-container" *ngIf="results.store.length">
+    <div class="col col-sm-12 table-container" *ngIf="resultsLength$ | async">
       <div class="row table-information">
         <div class="col-sm-12">
           Results for <i>"{{query}}"</i> within {{searchRadius}} miles
@@ -53,14 +53,18 @@
       <table class="table">
         <thead>
           <tr>
-            <td></td>
-            <td>Id</td>
-            <td (click)="sort('name')">name</td>
-            <td (click)="sort('address')">address</td>
+            <td>
+              <div class="checkbox" (click)="selectAll()">
+                <div class="checkbox-fill"></div>
+              </div>
+            </td>
+            <td class="sorteable" [class]="sorting.id" (click)="sort('id')">Id</td>
+            <td class="sorteable" [class]="sorting.name" (click)="sort('name')">name</td>
+            <td class="sorteable" [class]="sorting.address" (click)="sort('address')">address</td>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of results.filtered" (click)="onItemClicked(item)" [class.active]="item.checked">
+          <tr *ngFor="let item of results" (click)="onItemClicked(item)" [class.active]="item.checked">
             <td>
               <div class="checkbox">
                 <div class="checkbox-fill"></div>

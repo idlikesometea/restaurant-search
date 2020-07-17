@@ -17,9 +17,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild('searchbar', { static: true }) searchbar: ElementRef;
   searchResults$: Observable<ISearchResponse[]>;
   isLoading$: Observable<boolean>;
+  resultsLength$: Observable<number>;
   error$: Observable<string>;
   showAlert: boolean = false;
-  results: {store:ISearchResponse[], filtered:[]};
+  results = [];
+  sorting = {id:'', name: '', address: ''};
 
   constructor(
     private store: SearchStore,
@@ -39,6 +41,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchResults$ = this.store.searchResults$();
     this.searchResults$.subscribe(results => this.searchService.storeResults(results));
 
+    this.resultsLength$ = this.store.resultsLength$();
+
     this.isLoading$ = this.store.isLoading$();
     this.isLoading$.subscribe();
 
@@ -53,22 +57,34 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   search(query: string) {
     if (query === '') {
-      this.store.resetSearch();
-      return;
+      return this.store.resetSearch();
     }
     this.store.search(query, this.searchRadius);
   }
 
   filter(query: string) {
-    this.searchService.filter(query);
+    this.searchService.filter(query.trim());
   }
 
   sort(key) {
-    this.searchService.sort(key);
+    let order = '';
+    if (!this.sorting[key]) {
+      order = 'desc'
+    } else if(this.sorting[key] === 'desc'){
+      order = 'asc';
+    }
+    this.sorting = {id:'', name: '', address: ''};
+    this.sorting[key] = order;
+
+    this.searchService.sort(key, order);
   }
 
   onItemClicked(restaurant) {
     this.searchService.updateTour(restaurant);
+  }
+
+  selectAll() {
+    this.searchService.selectAll();
   }
 
   ngOnDestroy() {
