@@ -23,6 +23,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   results = [];
   sorting = {id:'', name: '', address: ''};
   allChecked:boolean = false;
+  showModal: boolean = false;
+  tour;
 
   constructor(
     private store: SearchStore,
@@ -91,7 +93,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   saveTour() {
     this.searchService.saveTour()
-    .then()
+    .then((tour) => {
+      this.showModal = true;
+      this.tour = tour;
+    })
     .catch(error => {
       alert(error);
     });

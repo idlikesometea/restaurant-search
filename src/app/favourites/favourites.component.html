@@ -1,7 +1,12 @@
 <div class="container">
   <div class="row">
     <div *ngFor="let tour of savedTours">
-      {{tour | json}}
+      <p>Tour with {{tour.items.length}} stops</p>
+      <ul>
+        <li *ngFor="let restaurant of tour.items">
+          {{restaurant.name}}
+        </li>
+      </ul>
     </div>
   </div>
 </div>

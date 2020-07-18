@@ -9,15 +9,16 @@ import { SearchStore } from 'src/store/state/search.state';
 import { EffectsModule } from '@ngrx/effects';
 import { SearchEffects } from 'src/store/effects/search.effects';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '../exports-modal/modal.component';
 
 @NgModule({
-  declarations: [SearchComponent],
+  declarations: [SearchComponent, ModalComponent],
   imports: [
     CommonModule,
     FormsModule,
     NgbModule,
     StoreModule.forFeature(fromSearch.searchFeatureKey, fromSearch.reducer),
-    EffectsModule.forFeature([SearchEffects])
+    EffectsModule.forFeature([SearchEffects]),
   ],
   providers: [
     SearchStore

@@ -14,7 +14,6 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.savedTours = this.searchService.getSavedTours();
-    console.log(this.savedTours);
   }
 
 }

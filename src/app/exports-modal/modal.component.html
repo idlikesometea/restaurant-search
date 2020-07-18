@@ -1,0 +1,30 @@
+<div class="modal-container" [class.active]="showModal">
+  <div class="custom-modal">
+    <div class="modal-header">
+      Pick a format to export your tour
+    </div>
+
+    <div class="modal-body">
+      <div class="form-check">
+        <label class="form-check-label" (click)="selectFormat($event.target.value)">
+          <input type="radio" name="format" class="form-check-input" value="pdf"> PDF
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" (click)="selectFormat($event.target.value)">
+          <input type="radio" name="format" class="form-check-input" value="csv"> CSV
+        </label>
+      </div>
+      <div class="form-check" (click)="selectFormat($event.target.value)">
+        <label class="form-check-label">
+          <input type="radio" name="format" class="form-check-input" value="json"> JSON
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="reset()">Dismiss</button>
+      <button class="btn btn-info" (click)="export()" [disabled]="!format">Export</button>
+    </div>
+  </div>
+</div>
