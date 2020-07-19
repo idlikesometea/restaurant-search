@@ -23,6 +23,7 @@ export class ModalComponent{
   }
 
   dismiss() {
+    this.format = '';
     this.onDone.emit(true);
   }
 }

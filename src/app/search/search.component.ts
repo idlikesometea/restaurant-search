@@ -103,7 +103,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  exportDone() {
+  exportDone(event) {
     console.log('done');
     this.showModal = false;
   }
