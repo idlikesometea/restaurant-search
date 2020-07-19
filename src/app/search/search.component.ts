@@ -94,12 +94,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   saveTour() {
     this.searchService.saveTour()
     .then((tour) => {
+      console.log(tour);
       this.showModal = true;
       this.tour = tour;
     })
     .catch(error => {
       alert(error);
     });
+  }
+
+  exportDone() {
+    console.log('done');
+    this.showModal = false;
   }
 
   ngOnDestroy() {

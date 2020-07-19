@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'app-modal-component',
@@ -8,6 +8,7 @@ import { Component, Input } from "@angular/core";
 export class ModalComponent{
   @Input() showModal:boolean = true;
   @Input() tour:any;
+  @Output() onDone = new EventEmitter<any>();
   format:string = '';
 
   constructor() {}
@@ -21,8 +22,12 @@ export class ModalComponent{
     this.reset();
   }
 
+  dismiss() {
+    this.reset();
+  }
+
   reset() {
+    this.onDone.emit(true);
     this.format = '';
-    this.showModal = false
   }
 }

@@ -82,4 +82,4 @@
   </div>
 </div>
 
-<app-modal-component [showModal]="showModal" [tour]="tour"></app-modal-component>
+<app-modal-component [showModal]="showModal" [tour]="tour" (onDone)="exportDone($event)"></app-modal-component>
