@@ -19,15 +19,10 @@ export class ModalComponent{
 
   export() {
     console.log('export file', this.format, this.tour);
-    this.reset();
+    this.dismiss();
   }
 
   dismiss() {
-    this.reset();
-  }
-
-  reset() {
     this.onDone.emit(true);
-    this.format = '';
   }
 }
