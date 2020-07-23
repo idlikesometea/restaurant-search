@@ -1,5 +1,5 @@
 import { Injectable, ElementRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, fromEvent, Subject } from 'rxjs';
 import { ISearchResponse, ISearch } from '../../models/search.model';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SearchService {
-  API_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
+  MOCK_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
+  API_URL = 'http://localhost:8000/api';
   results$ = new Subject<any>();
   savedTours = [];
   results = [];
@@ -22,8 +23,12 @@ export class SearchService {
   ) { }
 
   search(query: ISearch): Observable<any> {
-    return this.http.get<ISearchResponse[]>(this.API_URL + 'restaurants');
-  }
+    const queryParams = {
+      location: query.query,
+      radius: (query.radius * 1600).toString()
+    };
+    return this.http.get<any>(this.API_URL + '/search', {params: queryParams});
+  };
 
   getResults$() {
     return this.results$.asObservable();

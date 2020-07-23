@@ -10,9 +10,9 @@ import { SearchService } from './search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  searchRadius: number = 5;
-  radiusOptions = [5, 10, 25, 50];
-  query: string = '';
+  searchRadius = 5;
+  radiusOptions = [5, 10, 15, 25];
+  query = '';
   searchEvent$: Subscription;
   @ViewChild('searchbar', { static: true }) searchbar: ElementRef;
   searchResults$: Observable<ISearchResponse[]>;
