@@ -18,7 +18,6 @@ router.get('/search', (req, res, next) => {
     location: req.query.location,
     radius: req.query.radius
   };
-  console.log('params', params);
   const config = {
     headers: {
       Authorization: 'Bearer hp-kfkClFcBxeOaQb_-8UnYGQJt5tg6T2W1wnuoO5fYUKK_8FLR5KSCehS1W9MLXhMDVOcTRWtUlFYCJtTq4K6BxcJo6hA_m6T5ZzHooqmIy75undNKSewlYwvAYX3Yx'
@@ -27,7 +26,7 @@ router.get('/search', (req, res, next) => {
   }
   axios.get(businessSearch, config)
   .then(response => {
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       data: response.data
     });
