@@ -2,13 +2,6 @@ const express = require('express');
 
 const yelpService = require('../services/yelp');
 
-exports.test = (req, res, next) => {
-  res.status(201).json({
-    success: true,
-    message: 'Exito'
-  });
-};
-
 exports.search = (req, res, next) => {
   const params = {
     location: req.query.location,
