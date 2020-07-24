@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { SearchStore } from 'src/store/state/search.state';
-import { ISearchResponse } from 'src/models/search.model';
+import { Business } from 'src/models/search.model';
 import { SearchService } from './search.service';
 
 @Component({
@@ -15,13 +15,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   query = '';
   searchEvent$: Subscription;
   @ViewChild('searchbar', { static: true }) searchbar: ElementRef;
-  searchResults$: Observable<ISearchResponse[]>;
+  searchResults$: Observable<Business[]>;
   isLoading$: Observable<boolean>;
   resultsLength$: Observable<number>;
   error$: Observable<string>;
   showAlert: boolean = false;
   results = [];
-  sorting = {id:'', name: '', address: ''};
+  sorting = {name: '', price: '', rating: '', distance: ''};
   allChecked:boolean = false;
   showModal: boolean = false;
   tour;
@@ -77,7 +77,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else if(this.sorting[key] === 'desc'){
       order = 'asc';
     }
-    this.sorting = {id:'', name: '', address: ''};
+    this.sorting = {name:'', price: '', distance: '', rating: ''};
     this.sorting[key] = order;
 
     this.searchService.sort(key, order);
@@ -89,6 +89,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   selectAll() {
     this.allChecked = this.searchService.selectAll();
+
+  }
+
+  getDistance(meters) {
+    return (meters / 1609).toFixed(2) + ' mi.';
   }
 
   saveTour() {

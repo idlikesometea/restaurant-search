@@ -13,7 +13,7 @@ export class SearchEffects{
     mergeMap(query =>
       this.searchService.search(query)
         .pipe(
-          map(restaurants => ({type: '[Search API] Search Success', response: restaurants})),
+          map(response => ({type: '[Search API] Search Success', response: response.data})),
           catchError(error => of({type:'[Search API] Search Error', error: <HttpErrorResponse>error.statusText}))
         )
       )

@@ -58,9 +58,11 @@
                 <div class="checkbox-fill"></div>
               </div> -->
             </td>
-            <td class="sorteable" [class]="sorting.id" (click)="sort('id')">Id</td>
-            <td class="sorteable" [class]="sorting.name" (click)="sort('name')">name</td>
-            <td class="sorteable" [class]="sorting.address" (click)="sort('address')">address</td>
+            <td class="sorteable" [class]="sorting.name" (click)="sort('name')">Name</td>
+            <td>Address</td>
+            <td class="sorteable" [class]="sorting.price" (click)="sort('price')">Price</td>
+            <td class="sorteable" [class]="sorting.rating" (click)="sort('rating')">Rating</td>
+            <td class="sorteable" [class]="sorting.distance" (click)="sort('distance')">Distance</td>
           </tr>
         </thead>
         <tbody>
@@ -70,9 +72,11 @@
                 <div class="checkbox-fill"></div>
               </div>
             </td>
-            <td>{{item.id}}</td>
             <td>{{item.name}}</td>
-            <td>{{item.address}}</td>
+            <td>{{item.location.display_address[0]}}</td>
+            <td class="price">{{item.price}}</td>
+            <td class="rating">{{item.rating}}</td>
+            <td>{{getDistance(item.distance)}}</td>
           </tr>
         </tbody>
       </table>

@@ -11,7 +11,7 @@ exports.search = (req, res, next) => {
     .then(response => {
       res.status(200).json({
         success: true,
-        message: response.data
+        data: response.data
       });
     })
     .catch(error => {

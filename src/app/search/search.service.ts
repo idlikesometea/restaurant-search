@@ -1,7 +1,7 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, fromEvent, Subject } from 'rxjs';
-import { ISearchResponse, ISearch } from '../../models/search.model';
+import { Search, SearchResponse, Business } from '../../models/search.model';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
@@ -22,12 +22,12 @@ export class SearchService {
     private http: HttpClient
   ) { }
 
-  search(query: ISearch): Observable<any> {
+  search(query: Search): Observable<any> {
     const queryParams = {
       location: query.query,
       radius: (query.radius * 1600).toString()
     };
-    return this.http.get<any>(this.API_URL + '/search', {params: queryParams});
+    return this.http.get<SearchResponse>(this.API_URL + '/search', {params: queryParams});
   };
 
   getResults$() {
@@ -79,6 +79,7 @@ export class SearchService {
 
   storeResults(results) {
     this.tour = [];
+    console.log(results);
     const storedResults = results.map(result => ({...result, checked: false}));
 
     this.results = [...storedResults]
@@ -88,12 +89,12 @@ export class SearchService {
     this.results$.next([...storedResults]);
   }
 
-  updateTour(restaurant:ISearchResponse) {
-    const restaurantIndex = this.tour.findIndex(item => item === restaurant.id);
-    if (restaurantIndex > -1) {
-      this.tour.splice(restaurantIndex, 1);
+  updateTour(business:Business) {
+    const businessIndex = this.tour.findIndex(item => item === business.id);
+    if (businessIndex > -1) {
+      this.tour.splice(businessIndex, 1);
     } else {
-      this.tour.push(restaurant.id);
+      this.tour.push(business.id);
     }
 
     this.results.forEach(result => {

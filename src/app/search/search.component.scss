@@ -74,6 +74,12 @@ div.content {
                 position: relative;
               }
             }
+
+            &.price {
+              text-align: center;
+              color: #047a04;
+              font-weight: 600;
+            }
           }
 
           &.active {

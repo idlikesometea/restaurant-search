@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 
-import { ISearch, ISearchResponse } from '../../models/search.model';
+import { Search, Business, SearchResponse} from '../../models/search.model';
 
 export const search = createAction(
   '[Search Page] Search',
-  props<ISearch>()
+  props<Search>()
 );
 
 export const searchSuccess = createAction(
   '[Search API] Search Success',
-  props<{response:ISearchResponse[]}>()
+  props<{response:SearchResponse}>()
 );
 
 export const searchError = createAction(
