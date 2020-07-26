@@ -79,6 +79,12 @@ div.content {
               text-align: center;
               color: #047a04;
               font-weight: 600;
+              letter-spacing: -1px;
+            }
+
+            &.rating {
+              color: goldenrod;
+              text-align: center;
             }
           }
 

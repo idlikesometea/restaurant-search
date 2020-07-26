@@ -75,7 +75,12 @@
             <td>{{item.name}}</td>
             <td>{{item.location.display_address[0]}}</td>
             <td class="price">{{item.price}}</td>
-            <td class="rating">{{item.rating}}</td>
+            <td class="rating">
+              {{item.rating}}
+              <i class="icon star-fill"></i>
+              <i class="icon star-half"></i>
+              <i class="icon star"></i>
+            </td>
             <td>{{getDistance(item.distance)}}</td>
           </tr>
         </tbody>
