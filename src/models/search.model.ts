@@ -6,6 +6,7 @@ export interface Search {
 export interface SearchResponse {
   businesses: Business[];
   total: number;
+  offset: number;
   region: Region;
 }
 
