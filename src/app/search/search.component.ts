@@ -96,6 +96,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     return (meters / 1609).toFixed(2) + ' mi.';
   }
 
+  getRating(i, rating) {
+    let icon = 'icon star';
+    if ((i-0.5) === rating) {
+      icon += '-half';
+    } else if (rating >= i) {
+      icon += '-fill';
+    }
+    return icon;
+  }
+
   saveTour() {
     this.searchService.saveTour()
     .then((tour) => {

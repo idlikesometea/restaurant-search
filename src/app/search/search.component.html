@@ -42,52 +42,59 @@
         <div class="col-sm-12">
           Results for <i>"{{query}}"</i> within {{searchRadius}} miles
         </div>
+
         <div class="col-md-6 col-sm-12">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Filter</span>
             </div>
             <input class="form-control" (keyup)="filter($event.target.value)" type="text" placeholder="Filter by etc">
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <button (click)="saveTour()" class="btn btn-primary float-right">Save your itinerary</button>
         </div>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <td>
-              <!-- <div class="checkbox" [class.active]="allChecked" (click)="selectAll()">
-                <div class="checkbox-fill"></div>
-              </div> -->
-            </td>
-            <td class="sorteable" [class]="sorting.name" (click)="sort('name')">Name</td>
-            <td>Address</td>
-            <td class="sorteable" [class]="sorting.price" (click)="sort('price')">Price</td>
-            <td class="sorteable" [class]="sorting.rating" (click)="sort('rating')">Rating</td>
-            <td class="sorteable" [class]="sorting.distance" (click)="sort('distance')">Distance</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of results" (click)="onItemClicked(item)" [class.active]="item.checked">
-            <td>
-              <div class="checkbox">
-                <div class="checkbox-fill"></div>
-              </div>
-            </td>
-            <td>{{item.name}}</td>
-            <td>{{item.location.display_address[0]}}</td>
-            <td class="price">{{item.price}}</td>
-            <td class="rating">
-              <!-- {{item.rating}} -->
-              <i class="icon star-fill"></i>
-              <i class="icon star-half"></i>
-              <i class="icon star"></i>
-            </td>
-            <td>{{getDistance(item.distance)}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <button (click)="saveTour()" class="btn btn-primary align-self-end">Save your itinerary</button>
-    </div>
+      <div class="row">
+        <small>Showing {{resultsLength$ | async}} total results</small>
+        <table class="table">
+          <thead>
+            <tr>
+              <td>
+                <!-- <div class="checkbox" [class.active]="allChecked" (click)="selectAll()">
+                  <div class="checkbox-fill"></div>
+                </div> -->
+              </td>
+              <td class="sorteable" [class]="sorting.name" (click)="sort('name')">Name</td>
+              <td>Address</td>
+              <td class="sorteable" [class]="sorting.price" (click)="sort('price')">Price</td>
+              <td class="sorteable" [class]="sorting.rating" (click)="sort('rating')">Rating</td>
+              <td class="sorteable" [class]="sorting.distance" (click)="sort('distance')">Distance</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of results" (click)="onItemClicked(item)" [class.active]="item.checked">
+              <td>
+                <div class="checkbox">
+                  <div class="checkbox-fill"></div>
+                </div>
+              </td>
+              <td>{{item.name}}</td>
+              <td>{{item.location.display_address[0]}}</td>
+              <td class="price">{{item.price}}</td>
+              <td class="rating">
+                <i *ngFor="let i of [1,2,3,4,5]" [className]="getRating(i, item.rating)"></i>
+              </td>
+              <td>{{getDistance(item.distance)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <button (click)="saveTour()" class="btn btn-primary float-right">Save your itinerary</button>
+        </div>
+      </div>
   </div>
 </div>
 
