@@ -106,21 +106,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     return icon;
   }
 
+  showOptions() {
+    this.tour = this.searchService.tour;
+    this.showModal = true;
+  }
+
+  getOptions(options) {
+    this.showModal = false;
+    if (options.format) {
+      console.log('download format ', options.format);
+
+
+      if (options.save) {
+        this.saveTour();
+      }
+    }
+  }
+
   saveTour() {
     this.searchService.saveTour()
-    .then((tour) => {
-      console.log(tour);
-      this.showModal = true;
-      this.tour = tour;
-    })
+    .then(() => {})
     .catch(error => {
       alert(error);
     });
-  }
-
-  exportDone(event) {
-    console.log('done');
-    this.showModal = false;
   }
 
   ngOnDestroy() {

@@ -7,23 +7,25 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 })
 export class ModalComponent{
   @Input() showModal:boolean = true;
-  @Input() tour:any;
   @Output() onDone = new EventEmitter<any>();
   format:string = '';
-
+  save:boolean = false;
   constructor() {}
 
   selectFormat(format) {
     this.format = format;
   }
 
-  export() {
-    console.log('export file', this.format, this.tour);
-    this.dismiss();
+  getIconClass() {
+    let cssClass = 'icon heart';
+    return this.save ? cssClass + '-fill' : cssClass;
   }
 
-  dismiss() {
-    this.format = '';
-    this.onDone.emit(true);
+  dismiss(cancel) {
+    if (cancel) {
+      this.onDone.emit({save:false,format:''});
+    } else {
+      this.onDone.emit({save:this.save,format:this.format});
+    }
   }
 }

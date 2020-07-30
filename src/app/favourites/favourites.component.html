@@ -1,12 +1,33 @@
 <div class="container">
+  <div class="row tour" *ngFor="let tour of savedTours">
+    <div class="business-card row" *ngFor="let restaurant of tour.items">
+        <div class="business-img col-sm-12 col-md-4" [style.backgroundImage]="'url('+restaurant.image_url+')'"></div>
+        <div class="business-name col-sm-12 col-md-5">
+          <h3>{{restaurant.name}}</h3>
+          <p>{{restaurant.location.display_address.join(' ')}}</p>
+          <p>{{restaurant.display_phone}}</p>
+        </div>
+        <div class="business-description col-sm-12 col-md-3">
+          <p class="price">{{restaurant.price}}</p>
+          <p>
+            <i *ngFor="let i of [1,2,3,4,5]" [className]="getRating(i, restaurant.rating)"></i>
+          </p>
+          <p>
+            {{getDistance(restaurant.distance)}}
+            <br>
+            <a
+              [href]="getMapsUrl(restaurant.name, restaurant.location.display_address.join('+'))"
+              target="_blank">
+              <i class="icon map"></i> Open in maps
+            </a>
+          </p>
+        </div>
+      </div>
+  </div>
+
   <div class="row">
-    <div *ngFor="let tour of savedTours">
-      <p>Tour with {{tour.items.length}} stops</p>
-      <ul>
-        <li *ngFor="let restaurant of tour.items">
-          {{restaurant.name}}
-        </li>
-      </ul>
+    <div class="no-data" *ngIf="!savedTours.length">
+      <h1>You haven't saved any tour yet!</h1>
     </div>
   </div>
 </div>

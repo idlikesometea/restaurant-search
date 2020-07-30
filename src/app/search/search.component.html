@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="col-md-6 col-sm-12">
-          <button (click)="saveTour()" class="btn btn-primary float-right">Save your itinerary</button>
+          <button (click)="showOptions()" class="btn btn-primary float-right">Download your itinerary</button>
         </div>
       </div>
       <div class="row">
@@ -92,10 +92,10 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <button (click)="saveTour()" class="btn btn-primary float-right">Save your itinerary</button>
+          <button (click)="saveTour()" class="btn btn-primary float-right">Download your itinerary</button>
         </div>
       </div>
   </div>
 </div>
 
-<app-modal-component [showModal]="showModal" [tour]="tour" (onDone)="exportDone($event)"></app-modal-component>
+<app-modal-component [showModal]="showModal" (onDone)="getOptions($event)"></app-modal-component>

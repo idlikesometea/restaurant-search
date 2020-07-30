@@ -20,11 +20,18 @@
           <input type="radio" name="format" class="form-check-input" value="json"> JSON
         </label>
       </div>
+
+      <div class="form-check save-check" (click)="this.save = !this.save">
+        <label class="form-check-label">
+          <i [class]="getIconClass()"></i>
+          Save to favorites
+        </label>
+      </div>
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-danger" (click)="dismiss()">Dismiss</button>
-      <button class="btn btn-info" (click)="export()" [disabled]="!format">Export</button>
+      <button class="btn btn-danger" (click)="dismiss(true)">Cancel</button>
+      <button class="btn btn-info" (click)="dismiss()" [disabled]="!format">Download</button>
     </div>
   </div>
 </div>
