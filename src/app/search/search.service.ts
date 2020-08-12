@@ -10,6 +10,7 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 export class SearchService {
   MOCK_URL = 'https://5f0e71a9704cdf0016eaf02e.mockapi.io/api/v1/';
   API_URL = 'http://localhost:8000/api';
+  FILES_URL = 'http://localhost:8000/files';
   results$ = new Subject<any>();
   savedTours = [];
   results = [];
@@ -113,7 +114,6 @@ export class SearchService {
     const checked = selected.length === this.active.length ? false : true;
 
     this.active.forEach(result => {
-
       result.checked = checked;
     });
 
@@ -139,6 +139,26 @@ export class SearchService {
         reject('No items on tour');
       }
     })
+  }
+
+  exportFile(format) {
+    const tourInfo = this.setExportData();
+    const body = new HttpParams()
+      .set('tour', JSON.stringify(tourInfo));
+    return this.http.post(this.FILES_URL + '/' + format, body);
+  }
+
+  setExportData() {
+    return this.results
+      .filter(business => this.tour.includes(business.id))
+      .map(filtered => {
+        return {
+          name: filtered.name,
+          image: filtered.image_url,
+          rating: filtered.rating,
+          location: filtered.location.display_address.join(' ')
+        };
+      });
   }
 
   keyupEvent(element): Observable<string>{

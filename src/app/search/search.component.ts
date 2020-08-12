@@ -89,7 +89,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   selectAll() {
     this.allChecked = this.searchService.selectAll();
-
   }
 
   getDistance(meters) {
@@ -115,8 +114,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.showModal = false;
     if (options.format) {
       console.log('download format ', options.format);
-
-
+      this.searchService.exportFile(options.format)
+      .subscribe(response => {
+        console.log(response);
+      });
       if (options.save) {
         this.saveTour();
       }

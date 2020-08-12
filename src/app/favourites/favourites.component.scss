@@ -1,9 +1,11 @@
 div.container {
   padding-top: 3em;
+
 }
 
 div.tour {
   margin-bottom: 3em;
+  &.row { margin-left: 15px;}
   div.business-card {
     width: 100%;
     border: 1px solid antiquewhite;
@@ -11,6 +13,10 @@ div.tour {
     &:first-child { border-radius: 10px 10px 0 0 }
     &:last-child { border-radius: 0 0 10px 10px }
     &:only-child { border-radius: 10px }
+
+    div {
+      padding: 0.5em 2em;
+    }
 
     div.business-img {
       height: 200px;
@@ -24,6 +30,9 @@ div.tour {
     }
 
     div.business-description {
+      justify-content: space-evenly;
+      display: flex;
+      flex-direction: column;
       p.price {
         color: #047a04;
       }
