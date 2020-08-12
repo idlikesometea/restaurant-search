@@ -1,8 +1,9 @@
-import { Injectable, ElementRef } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, fromEvent, Subject } from 'rxjs';
 import { Search, SearchResponse, Business } from '../../models/search.model';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -145,7 +146,12 @@ export class SearchService {
     const tourInfo = this.setExportData();
     const body = new HttpParams()
       .set('tour', JSON.stringify(tourInfo));
-    return this.http.post(this.FILES_URL + '/' + format, body);
+    return this.http.post(this.FILES_URL + '/' + format, body, {responseType: 'blob'})
+      .toPromise()
+      .then(blob => {
+        console.log(blob);
+        FileSaver.saveAs(blob, "downloadFile");
+      });
   }
 
   setExportData() {

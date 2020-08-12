@@ -115,7 +115,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (options.format) {
       console.log('download format ', options.format);
       this.searchService.exportFile(options.format)
-      .subscribe(response => {
+      .then(response => {
         console.log(response);
       });
       if (options.save) {

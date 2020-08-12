@@ -8,11 +8,26 @@ const filePath = (name, format) => path.join(path.dirname(process.mainModule.fil
     name + '.' + format
 );
 
-exports.json = (req, res) => {
+exports.json = (req, res, next) => {
   const tourData = req.body.tour;
-  const path = filePath('test', 'json');
+  const timestamp = Date.now();
+  const path = filePath(timestamp, 'json');
   fs.writeFile(path, tourData, err => {
-    res.download(path);
+    if (err) {
+      res.status(500).json({
+        success: false,
+        file: err
+      });
+    } else {
+      res.download(path, err => {
+        if (err) {
+          res.status(500).json({
+            success: false,
+            file: err
+          });
+        }
+      });
+    }
   });
 };
 
