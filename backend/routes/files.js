@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.post("/json", filesController.json);
 
+router.post("/pdf", filesController.pdf);
+
 module.exports = router;

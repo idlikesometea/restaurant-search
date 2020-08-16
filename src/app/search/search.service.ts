@@ -149,8 +149,7 @@ export class SearchService {
     return this.http.post(this.FILES_URL + '/' + format, body, {responseType: 'blob'})
       .toPromise()
       .then(blob => {
-        console.log(blob);
-        FileSaver.saveAs(blob, "downloadFile");
+        FileSaver.saveAs(blob, "yourTour");
       });
   }
 
